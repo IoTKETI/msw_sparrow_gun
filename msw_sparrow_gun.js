@@ -39,7 +39,8 @@ var add_lib = {
     target: 'arm',
     description: "[name] [portnum] [baudrate]",
 //    scripts: 'python3 lib_sparrow_gun.py /MUV/control/lib_sparrow_gun/MICRO /dev/ttyUSB3 9600',
-    scripts: './chute lib_sparrow_gun /dev/ttyUSB3 9600',
+//    scripts: './chute lib_sparrow_gun /dev/ttyUSB3 9600',
+    scripts: './lib_sparrow_gun lib_sparrow_gun /dev/ttyUSB3 9600',
     data: ['GUN'],
     control: ['MICRO']
 };
@@ -193,11 +194,11 @@ function on_receive_from_nCube(topic, str_message) {
     var container_name = config.lib[0].control[0];
     var control_topic = '/MUV/control/' + config.lib[0].name + '/' + container_name;
     console.log('topic: ' + topic + ' cmd: ' + str_message);
-    var msg_con = JSON.stringify(str_message);
-    msg_con = msg_con["con"]
-    msw_mqtt_client.publish(control_topic, msg_con);
+//    var msg_con = JSON.stringify(str_message);
+//    msg_con = msg_con["con"]
+//    msw_mqtt_client.publish(control_topic, msg_con);
 //    msw_mqtt_client.publish(control_topic, JSON.stringify(str_message));
-//    msw_mqtt_client.publish(control_topic, str_message);
+    msw_mqtt_client.publish(control_topic, str_message);
     //}
 }
 
