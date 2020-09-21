@@ -101,7 +101,6 @@ function init() {
 }
 
 function runLib(obj_lib) {
-    console.log(obj_lib);
     try {
         var scripts_arr = obj_lib.scripts.split(' ');
         if(config.directory_name == '') {
