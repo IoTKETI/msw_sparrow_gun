@@ -5,8 +5,6 @@ import sys
 import threading
 from time import sleep
 import json
-from crccheck.crc import Crc16, CrcXmodem
-from crccheck.checksum import Checksum16
 
 ################################
 argv = sys.argv
