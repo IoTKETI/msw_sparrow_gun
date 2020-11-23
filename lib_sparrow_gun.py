@@ -11,8 +11,7 @@ argv = sys.argv
 
 global lib
 global lib_topic
-# broker_ip = 'localhost'
-broker_ip = '203.253,128.177'
+broker_ip = 'localhost'
 port = 1883
 
 
@@ -68,8 +67,7 @@ def msw_mqtt_connect(broker_ip, port):
     lib_mqtt_client.on_message = on_message
     lib_mqtt_client.connect(broker_ip, port)
     container_name = lib["control"][0]
-#     control_topic = '/MUV/control/' + lib["name"] + '/' + container_name
-    control_topic = '/Mobius/KETI_MUV/Mission_Data/Gun_Tester/msw_sparrow_gun/MICRO'
+    control_topic = '/MUV/control/' + lib["name"] + '/' + container_name
     lib_mqtt_client.subscribe(control_topic, 0)
     print(control_topic)
     lib_mqtt_client.loop_start()
