@@ -96,12 +96,6 @@ def on_receive_from_msw(topic, str_message):
     request_to_mission(str_message)
 
 
-def crc(command):
-    # Quick calculation
-    crc16 = crcmod.mkCrcFun(0x18005, rev=False, initCrc=0xFFFF, xorOut=0x0000)
-    print (hex(crc16(str(int(0x5A0001)))))
-    return checksum
-
 def request_to_mission(con):
     if missionPort != None:
         if missionPort.isOpen():
@@ -111,10 +105,8 @@ def request_to_mission(con):
                 command = '030' + con_arr[0] + '0' + con_arr[1] + '000000000000'
                 crc = 0
                 print(command)
-                hex_cmd = bytes.fromhex(command)
-                print('hex_cmd: ', hex_cmd)
-#                 checksum = crc(command)
                 for i in range(0,len(command),2):
+                    print('crc: ', crc)
                     crc ^= int(command[i+1],16)
                 if crc < 16:
                     command += ('0' + str(crc))
