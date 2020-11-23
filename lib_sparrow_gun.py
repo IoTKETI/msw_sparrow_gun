@@ -93,15 +93,15 @@ def on_message(client, userdata, msg):
 
 def on_receive_from_msw(topic, str_message):
     print('[' + topic + '] ' + str_message)
-    cinObj = json.loads(str_message)
-    request_to_mission(cinObj)
+#     cinObj = json.loads(str_message)
+    request_to_mission(str_message)
 
 
-def request_to_mission(cinObj):
+def request_to_mission(con):
     if missionPort != None:
         if missionPort.isOpen():
-            con = cinObj['con']
-            print(con)
+#             con = cinObj['con']
+#             print(con)
             con_arr = con.split(',')
             if (int(con_arr[0]) < 8) and (int(con_arr[1]) < 8):
                 stx = 'A2'
