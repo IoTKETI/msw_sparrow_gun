@@ -101,7 +101,7 @@ def on_receive_from_msw(topic, str_message):
 def crc(command):
     # Quick calculation
     crc16 = crcmod.mkCrcFun(0x18005, rev=False, initCrc=0xFFFF, xorOut=0x0000)
-    print hex(crc16(str(int(0x5A0001))))
+    print (hex(crc16(str(int(0x5A0001)))))
     return checksum
 
 def request_to_mission(con):
