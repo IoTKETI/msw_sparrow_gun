@@ -111,8 +111,7 @@ function runLib(obj_lib) {
             scripts_arr[0] = './' + config.directory_name + '/' + scripts_arr[0];
         }
 
-        // var run_lib = spawn(scripts_arr[0], scripts_arr.slice(1));
-        var run_lib = spawn('python3', ['./' + config.directory_name + '/lib_sparrow_gun.py', '/dev/ttyUSB3', '9600']);
+        var run_lib = spawn(scripts_arr[0], scripts_arr.slice(1));
 
         run_lib.stdout.on('data', function(data) {
             console.log('stdout: ' + data);
