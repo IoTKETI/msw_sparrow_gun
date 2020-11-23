@@ -78,7 +78,7 @@ function init() {
                 if (msw_mqtt_client != null) {
                     for (var i = 0; i < config.lib[idx].control.length; i++) {
                         var sub_container_name = config.lib[idx].control[i];
-                        _topic = '/Mobius/' + config.gcs + '/Mission_Data/' + config.drone + '/' + sub_container_name;
+                        _topic = '/Mobius/' + config.gcs + '/Mission_Data/' + config.drone + '/' + config.name +  '/' + sub_container_name;
                         msw_mqtt_client.subscribe(_topic);
                         msw_sub_muv_topic.push(_topic);
                         console.log('[msw_mqtt] msw_sub_muv_topic[' + i + ']: ' + _topic);
@@ -262,7 +262,6 @@ function parseControlMission(topic, str_message) {
 
         var topic_arr = topic.split('/');
         var _topic = '/MUV/control/' + config.lib[0].name + '/' + topic_arr[topic_arr.length - 1];
-        console.log('MSG topic: ', _topic);
         msw_mqtt_client.publish(_topic, str_message);
     }
     catch (e) {
