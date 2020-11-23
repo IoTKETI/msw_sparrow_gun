@@ -101,6 +101,7 @@ def request_to_mission(cinObj):
     if missionPort != None:
         if missionPort.isOpen():
             con = cinObj['con']
+            print(con)
             con_arr = con.split(',')
             if (int(con_arr[0]) < 8) and (int(con_arr[1]) < 8):
                 stx = 'A2'
