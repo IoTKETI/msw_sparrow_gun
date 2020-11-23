@@ -97,29 +97,33 @@ def on_receive_from_msw(topic, str_message):
 
 
 def request_to_mission(con):
-    if missionPort != None:
-        if missionPort.isOpen():
-            con_arr = con.split(',')
-            if (int(con_arr[0]) < 8) and (int(con_arr[1]) < 8):
-                stx = 'A2'
-                command = '030' + con_arr[0] + '0' + con_arr[1] + '000000000000'
-                crc = 0
-                print(command)
-                for i in range(0,len(command),2):
-                    print('crc: ', crc)
-                    crc ^= int(command[i+1],16)
-                if crc < 16:
-                    command += ('0' + str(crc))
-                else :
-                    command += str(crc)
+    try:
+        if missionPort != None:
+            if missionPort.isOpen():
+                con_arr = con.split(',')
+                if (int(con_arr[0]) < 8) and (int(con_arr[1]) < 8):
+                    stx = 'A2'
+                    command = '030' + con_arr[0] + '0' + con_arr[1] + '000000000000'
+                    crc = 0
+                    print(command)
+                    for i in range(0,len(command),2):
+                        print('crc: ', crc)
+                        crc ^= int(command[i+1],16)
+                    if crc < 16:
+                        command += ('0' + str(crc))
+                    else :
+                        command += str(crc)
 
-                etx = 'A3'
-                command = stx + command + etx
-                print('command: ', command)
-                
-                msdata = bytes.fromhex(command)
-                print('msdata: ', msdata)
-                missionPort.write(msdata)
+                    etx = 'A3'
+                    command = stx + command + etx
+                    print('command: ', command)
+
+                    msdata = bytes.fromhex(command)
+                    print('msdata: ', msdata)
+                    missionPort.write(msdata)
+
+    except (ValueError, IndexError, TypeError):
+        pass
 
 def main():
     global lib
