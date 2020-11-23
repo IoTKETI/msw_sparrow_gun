@@ -5,6 +5,8 @@ import sys
 import threading
 from time import sleep
 import json
+from crccheck.crc import Crc16, CrcXmodem
+from crccheck.checksum import Checksum16
 
 ################################
 argv = sys.argv
@@ -69,7 +71,7 @@ def msw_mqtt_connect(broker_ip, port):
     container_name = lib["control"][0]
     control_topic = '/MUV/control/' + lib["name"] + '/' + container_name
     lib_mqtt_client.subscribe(control_topic, 0)
-    print(control_topic)
+#     print(control_topic)
     lib_mqtt_client.loop_start()
     return lib_mqtt_client
 
@@ -93,21 +95,27 @@ def on_message(client, userdata, msg):
 
 def on_receive_from_msw(topic, str_message):
     print('[' + topic + '] ' + str_message)
-#     cinObj = json.loads(str_message)
     request_to_mission(str_message)
 
+
+def crc(command):
+    # Quick calculation
+    data = bytearray.fromhex(command)
+    crc = Crc16.calc(data)
+    checksum = Checksum16.calc(data)
+    print('checksum: ', checksum)
+    return checksum
 
 def request_to_mission(con):
     if missionPort != None:
         if missionPort.isOpen():
-#             con = cinObj['con']
-#             print(con)
             con_arr = con.split(',')
             if (int(con_arr[0]) < 8) and (int(con_arr[1]) < 8):
                 stx = 'A2'
                 command = '030' + con_arr[0] + '0' + con_arr[1] + '000000000000'
                 crc = 0
                 print(command)
+                checksum = crc(command)
                 for i in range(0,len(command),2):
                     crc ^= int(command[i+1],16)
                 if crc < 16:
