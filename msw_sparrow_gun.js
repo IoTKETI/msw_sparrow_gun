@@ -111,7 +111,8 @@ function runLib(obj_lib) {
             scripts_arr[0] = './' + config.directory_name + '/' + scripts_arr[0];
         }
 
-        var run_lib = spawn(scripts_arr[0], scripts_arr.slice(1));
+        // var run_lib = spawn(scripts_arr[0], scripts_arr.slice(1));
+        var run_lib = spawn('python3', ['./' + config.directory_name + '/lib_sparrow_gun.py', '/dev/ttyUSB0', '9600']);
 
         run_lib.stdout.on('data', function(data) {
             console.log('stdout: ' + data);
@@ -235,18 +236,18 @@ setTimeout(init, 1000);
 function parseDataMission(topic, str_message) {
     try {
         // User define Code
-        var obj_lib_data = JSON.parse(str_message);
-        if(fc.hasOwnProperty('global_position_int')) {
-            Object.assign(obj_lib_data, JSON.parse(JSON.stringify(fc['global_position_int'])));
-        }
-        str_message = JSON.stringify(obj_lib_data);
+        // var obj_lib_data = JSON.parse(str_message);
+        // if(fc.hasOwnProperty('global_position_int')) {
+        //     Object.assign(obj_lib_data, JSON.parse(JSON.stringify(fc['global_position_int'])));
+        // }
+        // str_message = JSON.stringify(obj_lib_data);
 
         ///////////////////////////////////////////////////////////////////////
 
         var topic_arr = topic.split('/');
         var data_topic = '/Mobius/' + config.gcs + '/Mission_Data/' + config.drone + '/' + config.name + '/' + topic_arr[topic_arr.length-1];
-        // msw_mqtt_client.publish(data_topic + config.sortie_name, str_message);
-        msw_mqtt_client.publish(data_topic, str_message);
+        msw_mqtt_client.publish(data_topic + '/' + my_sortie_name, str_message);
+        // msw_mqtt_client.publish(data_topic, str_message);
     }
     catch (e) {
         console.log('[parseDataMission] data format of lib is not json');
