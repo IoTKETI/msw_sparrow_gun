@@ -3,8 +3,6 @@
     "target": "armv6",
     "description": "[name] [portnum] [baudrate]",
     "scripts": "./lib_sparrow_gun /dev/ttyUSB3 9600",
-    "data": [
-        "GUN"
-    ],
+    "data": [],
     "control": ["MICRO"]
 }
