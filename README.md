@@ -1,4 +1,4 @@
-# msw_gun
+# msw_sparrow_gun
 
 ## Install dependencies
 ### MQTT-broker
