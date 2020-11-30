@@ -129,6 +129,7 @@ def on_message(client, userdata, msg):
 
 
 def request_to_mission(con):
+    global missionPort
     print('request_to_mission: ', con)
 
     try:
