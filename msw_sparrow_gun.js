@@ -235,12 +235,6 @@ function on_process_fc_data(topic, str_message) {
 
 setTimeout(init, 1000);
 
-function req() {
-    console.log('send req to /MUV/data/' + config.lib[0].name + '/' + config.lib[0].data + 'req');
-    msw_mqtt_client.publish('/MUV/data/' + config.lib[0].name + '/' + config.lib[0].data + 'req', "1");
-}
-setTimeout(req, 1000);
-
 function parseDataMission(topic, str_message) {
     try {
         // User define Code

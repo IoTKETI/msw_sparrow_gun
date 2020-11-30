@@ -2,6 +2,7 @@
 import serial, sys, json, os, signal, psutil
 import paho.mqtt.client as mqtt
 from time import sleep
+import threading
 
 ################################
 argv = sys.argv
