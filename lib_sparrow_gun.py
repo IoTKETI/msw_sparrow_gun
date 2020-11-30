@@ -212,8 +212,8 @@ def main():
     lib['serialBaudrate'] = argv[2]
     
     control_topic = '/MUV/control/' + lib["name"] + '/' + lib["control"][0]
-    data_topic = '/MUV/control/' + lib["name"] + '/' + lib["data"][0]
-    req_topic = '/MUV/control/' + lib["name"] + '/' + lib["data"][0] + 'req'
+    data_topic = '/MUV/data/' + lib["name"] + '/' + lib["data"][0]
+    req_topic = '/MUV/data/' + lib["name"] + '/' + lib["data"][0] + 'req'
 
     lib_mqtt_client = msw_mqtt_connect(broker_ip, port)
     missionPort = missionPortOpening(lib['serialPortNum'], lib['serialBaudrate'])
