@@ -114,9 +114,9 @@ def on_subscribe(client, userdata, mid, granted_qos):
 
 
 def on_message(client, userdata, msg):
-    cmd = msg.payload.decode('utf-8')
-    print('on_message: ', cmd)
-    request_to_mission(cmd)
+#     cmd = msg.payload.decode('utf-8')
+#     print('on_message: ', cmd)
+#     request_to_mission(cmd)
     global gun_event
     global data_topic
     global control_topic
@@ -124,21 +124,20 @@ def on_message(client, userdata, msg):
     global con
     global req
 
-    print(msg.topic)
+#     print(msg.topic)
 
     if msg.topic == control_topic:
-        print('control')
         con = msg.payload.decode('utf-8')
         gun_event |= CONTROL_E
     elif msg.topic == req_topic:
-        print('req status')
         req = msg.payload.decode('utf-8')
         gun_event |= DATA_E
 
 
 
-def request_to_mission(con):
+def request_to_mission():
     global missionPort
+    global con
 
     try:
         if missionPort != None:
@@ -231,7 +230,7 @@ def main():
     while True:
         if gun_event & CONTROL_E:
             gun_event &= (~CONTROL_E)
-            request_to_mission(con)
+            request_to_mission()
         elif gun_event & DATA_E:
             gun_event &= (~DATA_E)
             print('req status 2')
