@@ -235,6 +235,11 @@ function on_process_fc_data(topic, str_message) {
 
 setTimeout(init, 1000);
 
+function req() {
+    msw_sub_lib_topic.publish('/MUV/data/' + config.lib[0].name + '/' + config.lib[0].data + 'req', '1')
+}
+setTimeout(req, 1000);
+
 function parseDataMission(topic, str_message) {
     try {
         // User define Code
@@ -243,7 +248,7 @@ function parseDataMission(topic, str_message) {
         //     Object.assign(obj_lib_data, JSON.parse(JSON.stringify(fc['global_position_int'])));
         // }
         // str_message = JSON.stringify(obj_lib_data);
-        msw_sub_lib_topic.publish('/MUV/data/' + config.lib[0].name + '/' + config.lib[0].data + 'req', '1')
+
         ///////////////////////////////////////////////////////////////////////
 
         var topic_arr = topic.split('/');
