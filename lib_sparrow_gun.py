@@ -10,8 +10,9 @@ argv = sys.argv
 broker_ip = 'localhost'
 port = 1883
 
-control_topic = ''
-data_topic = ''
+control_topic = '/MUV/control/' + lib["name"] + '/' + lib["control"][0]
+data_topic = '/MUV/control/' + lib["name"] + '/' + lib["data"][0]
+req_topic = '/MUV/control/' + lib["name"] + '/' + lib["data"][0] + 'req'
 con = ''
 req = ''
 
@@ -92,7 +93,6 @@ def msw_mqtt_connect(broker_ip, port):
     lib_mqtt_client.connect(broker_ip, port)
     control_topic = '/MUV/control/' + lib["name"] + '/' + lib["control"][0]
     lib_mqtt_client.subscribe(control_topic, 0)
-    req_topic = data_topic+'req'
     print(req_topic)
     lib_mqtt_client.subscribe(req_topic, 0)
 
