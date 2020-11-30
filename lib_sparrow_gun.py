@@ -49,7 +49,8 @@ def send_data_to_msw (data_topic, obj_data):
 
 def missionPortData():
     global missionPort
-    arrRssi = missionPort.read()
+
+    arrRssi = missionPort.readlines()
     print("arrRssi: ", arrRssi)
     print("arrRssi Type: ", type(arrRssi))
 #     send_data_to_msw(arrRssi)
