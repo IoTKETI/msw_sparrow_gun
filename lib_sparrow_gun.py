@@ -66,8 +66,7 @@ def msw_mqtt_connect(broker_ip, port):
     lib_mqtt_client.on_subscribe = on_subscribe
     lib_mqtt_client.on_message = on_message
     lib_mqtt_client.connect(broker_ip, port)
-    container_name = lib["control"][0]
-    control_topic = '/MUV/control/' + lib["name"] + '/' + container_name
+    control_topic = '/MUV/control/' + lib["name"] + '/' + lib["control"][0]
     lib_mqtt_client.subscribe(control_topic, 0)
 #     print(control_topic)
     lib_mqtt_client.loop_start()
