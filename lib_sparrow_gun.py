@@ -54,10 +54,9 @@ def missionPortError(err):
     os.kill(i_pid, signal.SIGKILL)
 
 
-def send_data_to_msw (data_topic, obj_data):
+def send_data_to_msw (obj_data):
     global lib_mqtt_client
     data_topic = '/MUV/data/' + lib["name"] + '/' + lib["data"][0]
-
     lib_mqtt_client.publish(data_topic, obj_data)
 
 
