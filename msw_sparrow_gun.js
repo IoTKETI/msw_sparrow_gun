@@ -243,7 +243,7 @@ function parseDataMission(topic, str_message) {
         //     Object.assign(obj_lib_data, JSON.parse(JSON.stringify(fc['global_position_int'])));
         // }
         // str_message = JSON.stringify(obj_lib_data);
-
+        msw_sub_lib_topic.publish('/MUV/data/' + config.lib[0].name + '/' + config.lib[0].data + 'req', '1')
         ///////////////////////////////////////////////////////////////////////
 
         var topic_arr = topic.split('/');

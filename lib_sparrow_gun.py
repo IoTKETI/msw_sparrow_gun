@@ -13,6 +13,7 @@ port = 1883
 control_topic = ''
 data_topic = ''
 con = ''
+req = ''
 
 gun_event = 0x00
 DATA_E = 0x01
@@ -71,9 +72,11 @@ def send_data_to_msw (obj_data):
 
 def missionPortData():
     global status
-    status = 'alive'
-    send_data_to_msw(status)
-    sleep(1)
+    global req
+    if req == '1':
+        status = 'alive'
+        send_data_to_msw(status)
+#         sleep(1)
 
 def msw_mqtt_connect(broker_ip, port):
     global lib
@@ -110,11 +113,13 @@ def on_message(client, userdata, msg):
     global data_topic
     global control_topic
     global con
+    global req
 
     if msg.topic == control_topic:
         con = msg.payload.decode('utf-8')
         gun_event |= CONTROL_E
-    else:
+    elif msg.topic == data_topic + 'req':
+        req = msg.payload.decode('utf-8')
         gun_event |= DATA_E
 
 
@@ -157,6 +162,7 @@ def main():
     global DATA_E
     global CONTROL_E
     global con
+    global req
 
     my_lib_name = 'lib_sparrow_gun'
     my_msw_name = 'msw'+ my_lib_name[3:] + '_' + 'msw'+ my_lib_name[3:]
