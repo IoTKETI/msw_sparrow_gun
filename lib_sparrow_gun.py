@@ -4,18 +4,10 @@ import paho.mqtt.client as mqtt
 from time import sleep
 
 ################################
-i_pid = os.getpid()
 argv = sys.argv
 
 broker_ip = 'localhost'
 port = 1883
-
-con = ''
-req = ''
-
-gun_event = 0x00
-DATA_E = 0x01
-CONTROL_E = 0x02
 
 def missionPortOpening(missionPortNum, missionBaudrate):
     global missionPort
@@ -25,6 +17,10 @@ def missionPortOpening(missionPortNum, missionBaudrate):
         missionPort = serial.Serial(missionPortNum, missionBaudrate, timeout=2)
         if missionPort.isOpen():
             print('missionPort Open. ', missionPortNum, 'Data rate: ', missionBaudrate)
+            mission_thread = threading.Thread(
+                target=missionPortData, args=(missionPort,)
+            )
+            mission_thread.start()
 
     except serial.SerialException as e:
         missionPortError(e)
@@ -70,11 +66,11 @@ def send_data_to_msw (obj_data):
 
 def missionPortData():
     global status
-    global req
-    if req == '1':
+
+    while True:
         status = 'alive'
         send_data_to_msw(status)
-#         sleep(1)
+        sleep(1)
 
 def msw_mqtt_connect(broker_ip, port):
     global lib
@@ -90,7 +86,6 @@ def msw_mqtt_connect(broker_ip, port):
     lib_mqtt_client.connect(broker_ip, port)
     control_topic = '/MUV/control/' + lib["name"] + '/' + lib["control"][0]
     lib_mqtt_client.subscribe(control_topic, 0)
-    print(req_topic)
     lib_mqtt_client.subscribe(req_topic, 0)
 
     lib_mqtt_client.loop_start()
@@ -110,22 +105,24 @@ def on_subscribe(client, userdata, mid, granted_qos):
 
 
 def on_message(client, userdata, msg):
-    global gun_event
-    global data_topic
-    global control_topic
-    global con
-    global req
-
-    print(msg.topic)
-
-    if msg.topic == control_topic:
-        print('control')
-        con = msg.payload.decode('utf-8')
-        gun_event |= CONTROL_E
-    elif msg.topic == data_topic + 'req':
-        print('data')
-        req = msg.payload.decode('utf-8')
-        gun_event |= DATA_E
+    cmd = msg.payload.decode('utf-8')
+    request_to_mission(cmd)
+#     global gun_event
+#     global data_topic
+#     global control_topic
+#     global con
+#     global req
+#
+#     print(msg.topic)
+#
+#     if msg.topic == control_topic:
+#         print('control')
+#         con = msg.payload.decode('utf-8')
+#         gun_event |= CONTROL_E
+#     elif msg.topic == data_topic + 'req':
+#         print('data')
+#         req = msg.payload.decode('utf-8')
+#         gun_event |= DATA_E
 
 
 
@@ -217,14 +214,14 @@ def main():
     lib_mqtt_client = msw_mqtt_connect(broker_ip, port)
     missionPort = missionPortOpening(lib['serialPortNum'], lib['serialBaudrate'])
 
-    while True:
-        if gun_event & CONTROL_E:
-            gun_event &= (~CONTROL_E)
-            request_to_mission(con)
-        elif gun_event & DATA_E:
-            gun_event &= (~DATA_E)
-            print('data 2')
-            missionPortData()
+#     while True:
+#         if gun_event & CONTROL_E:
+#             gun_event &= (~CONTROL_E)
+#             request_to_mission(con)
+#         elif gun_event & DATA_E:
+#             gun_event &= (~DATA_E)
+#             print('data 2')
+#             missionPortData()
 
 
 if __name__ == "__main__":
