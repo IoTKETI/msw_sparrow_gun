@@ -141,12 +141,13 @@ def main():
     pid_arr = []
 
     processWatch = [p.cmdline() for p in psutil.process_iter()].count(cmd)
-    if processWatch > 1:
+    if processWatch > 2:
         for p in psutil.process_iter():
             if (p.cmdline() == cmd):
+                print(p.pid)
                 pid_arr.append(p.pid)
-        os.kill(pid_arr[0], signal.SIGKILL)
-        os.kill(pid_arr[0]+1, signal.SIGKILL)
+#         os.kill(pid_arr[0], signal.SIGKILL)
+#         os.kill(pid_arr[0]+1, signal.SIGKILL)
 
     try:
         lib = dict()
