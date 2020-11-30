@@ -218,9 +218,11 @@ def main():
     while True:
         if gun_event & CONTROL_E:
             gun_event &= (~CONTROL_E)
+            print('control 2')
             request_to_mission(con)
         elif gun_event & DATA_E:
             gun_event &= (~DATA_E)
+            print('data 2')
             missionPortData()
 
 
