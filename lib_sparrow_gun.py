@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import serial, sys, json, os, signal
 import paho.mqtt.client as mqtt
+from time import sleep
 
 ################################
 i_pid = os.getpid()
@@ -11,7 +12,6 @@ port = 1883
 
 def missionPortOpening(missionPortNum, missionBaudrate):
     global missionPort
-    global status
 
     print('Connect to serial...')
     try:
@@ -27,33 +27,44 @@ def missionPortOpening(missionPortNum, missionBaudrate):
 
 def missionPortOpen():
     global missionPort
+    global status
+    status = 'open'
+    send_data_to_msw(status)
+
     print('missionPort open!')
     missionPort.open()
 
 
 def missionPortClose():
     global missionPort
+    global status
+    status = 'close'
+    send_data_to_msw(status)
+
     print('missionPort closed!')
     missionPort.close()
 
 
 def missionPortError(err):
     print('[missionPort error]: ', err)
+    global status
+    status = 'error'
+    send_data_to_msw(status)
+
     os.kill(i_pid, signal.SIGKILL)
 
 
 def send_data_to_msw (data_topic, obj_data):
     global lib_mqtt_client
+    data_topic = '/MUV/data/' + lib["name"] + '/' + lib["data"][0]
+
     lib_mqtt_client.publish(data_topic, obj_data)
 
 
 def missionPortData():
-    global missionPort
-
-    arrRssi = missionPort.readlines()
-    print("arrRssi: ", arrRssi)
-    print("arrRssi Type: ", type(arrRssi))
-#     send_data_to_msw(arrRssi)
+    global status
+    status = 'alive'
+    send_data_to_msw(status)
 
 def msw_mqtt_connect(broker_ip, port):
     global lib
