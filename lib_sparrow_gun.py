@@ -102,10 +102,10 @@ def on_message(client, userdata, msg):
 
 def request_to_mission(con):
     try:
-        print(con)
         if missionPort != None:
             if missionPort.isOpen():
                 con_arr = con.split(',')
+                print(con_arr)
                 if (int(con_arr[0]) < 8) and (int(con_arr[1]) < 8):
                     stx = 'A2'
                     command = '030' + con_arr[0] + '0' + con_arr[1] + '000000000000'
