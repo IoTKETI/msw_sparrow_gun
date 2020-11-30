@@ -139,7 +139,7 @@ def main():
     print ('./' + my_msw_name + '/' + my_lib_name, argv[1], argv[2])
 #     processWatch = [p.cmdline() for p in psutil.process_iter()].count(['./' + my_msw_name + '/' + my_lib_name, argv[1], argv[2]])
     processWatch = [p.cmdline() for p in psutil.process_iter()].count(['python3', './' + my_msw_name + '/' + my_lib_name + '.py', argv[1], argv[2]])
-    if processWatch > 0:
+    if processWatch > 1:
         os.kill(i_pid, signal.SIGKILL)
 
     try:
