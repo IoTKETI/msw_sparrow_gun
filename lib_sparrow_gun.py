@@ -10,6 +10,14 @@ argv = sys.argv
 broker_ip = 'localhost'
 port = 1883
 
+control_topic = ''
+data_topic = ''
+con = ''
+
+gun_event = 0x00
+DATA_E = 0x01
+CONTROL_E = 0x02
+
 def missionPortOpening(missionPortNum, missionBaudrate):
     global missionPort
 
@@ -56,6 +64,7 @@ def missionPortError(err):
 
 def send_data_to_msw (obj_data):
     global lib_mqtt_client
+    global data_topic
     data_topic = '/MUV/data/' + lib["name"] + '/' + lib["data"][0]
     lib_mqtt_client.publish(data_topic, obj_data)
 
@@ -69,6 +78,7 @@ def missionPortData():
 def msw_mqtt_connect(broker_ip, port):
     global lib
     global lib_mqtt_client
+    global control_topic
 
     lib_mqtt_client = mqtt.Client()
     lib_mqtt_client.on_connect = on_connect
@@ -96,8 +106,17 @@ def on_subscribe(client, userdata, mid, granted_qos):
 
 
 def on_message(client, userdata, msg):
-    payload = msg.payload.decode('utf-8')
-    request_to_mission(str(payload))
+    global gun_event
+    global data_topic
+    global control_topic
+    global con
+
+    if msg.topic == control_topic:
+        con = msg.payload.decode('utf-8')
+        gun_event |= CONTROL_E
+    else:
+        gun_event |= DATA_E
+
 
 
 def request_to_mission(con):
@@ -134,6 +153,10 @@ def request_to_mission(con):
 def main():
     global lib
     global missionPort
+    global gun_event
+    global DATA_E
+    global CONTROL_E
+    global con
 
     my_lib_name = 'lib_sparrow_gun'
     my_msw_name = 'msw'+ my_lib_name[3:] + '_' + 'msw'+ my_lib_name[3:]
@@ -179,7 +202,12 @@ def main():
     missionPort = missionPortOpening(lib['serialPortNum'], lib['serialBaudrate'])
 
     while True:
-        missionPortData()
+        if gun_event & CONTROL_E:
+            gun_event &= (~CONTROL_E)
+            request_to_mission(con)
+        elif gun_event & DATA_E:
+            gun_event &= (~DATA_E)
+            missionPortData()
 
 
 if __name__ == "__main__":
