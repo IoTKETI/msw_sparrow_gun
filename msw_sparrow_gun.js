@@ -214,6 +214,10 @@ function msw_mqtt_connect(broker_ip, port) {
     });
 }
 
+function req_status() {
+    msw_mqtt_client.publish('/MUV/data/' + config.lib[0].name + '/' + config.lib[0].data + 'req', "1");
+}
+
 function on_receive_from_muv(topic, str_message) {
     console.log('[' + topic + '] ' + str_message);
 
