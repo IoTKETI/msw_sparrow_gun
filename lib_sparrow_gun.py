@@ -129,8 +129,7 @@ def on_message(client, userdata, msg):
 
 
 
-def request_to_mission():
-    global con
+def request_to_mission(con):
     try:
         if missionPort != None:
             if missionPort.isOpen():
@@ -221,9 +220,7 @@ def main():
     while True:
         if gun_event & CONTROL_E:
             gun_event &= (~CONTROL_E)
-            print('control 2')
-            print(con)
-            request_to_mission()
+            request_to_mission(con)
         elif gun_event & DATA_E:
             gun_event &= (~DATA_E)
             print('data 2')
