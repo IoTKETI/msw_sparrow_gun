@@ -217,6 +217,7 @@ function msw_mqtt_connect(broker_ip, port) {
 function req_status() {
     console.log('send req');
     msw_mqtt_client.publish('/MUV/data/' + config.lib[0].name + '/' + config.lib[0].data + 'req', "1");
+    setTimeout(req_status, 1000);
 }
 
 function on_receive_from_muv(topic, str_message) {
@@ -239,7 +240,7 @@ function on_process_fc_data(topic, str_message) {
 }
 
 setTimeout(init, 1000);
-setTimeout(req_status, 1000);
+req_status();
 
 function parseDataMission(topic, str_message) {
     try {
