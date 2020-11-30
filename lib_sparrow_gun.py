@@ -136,14 +136,16 @@ def main():
     my_lib_name = 'lib_sparrow_gun'
     my_msw_name = 'msw'+ my_lib_name[3:] + '_' + 'msw'+ my_lib_name[3:]
 
+#     cmd = ['python3', './' + my_msw_name + '/' + my_lib_name + '.py', argv[1], argv[2]]
+    cmd = ['./' + my_msw_name + '/' + my_lib_name, argv[1], argv[2]]
     pid_arr = []
-    processWatch = [p.cmdline() for p in psutil.process_iter()].count(['python3', './' + my_msw_name + '/' + my_lib_name + '.py', argv[1], argv[2]])
+
+    processWatch = [p.cmdline() for p in psutil.process_iter()].count(cmd)
     if processWatch > 1:
         for p in psutil.process_iter():
-            if (p.cmdline() == ['python3', './' + my_msw_name + '/' + my_lib_name + '.py', argv[1], argv[2]]):
+            if (p.cmdline() == cmd):
                 pid_arr.append(p.pid)
         os.kill(pid_arr[0], signal.SIGKILL)
-#     processWatch = [p.cmdline() for p in psutil.process_iter()].count(['./' + my_msw_name + '/' + my_lib_name, argv[1], argv[2]])
 
     try:
         lib = dict()
