@@ -114,6 +114,7 @@ def on_message(client, userdata, msg):
     global control_topic
     global con
     global req
+    print(msg.topic)
 
     if msg.topic == control_topic:
         con = msg.payload.decode('utf-8')
