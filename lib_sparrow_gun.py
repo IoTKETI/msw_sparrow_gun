@@ -97,7 +97,7 @@ def on_subscribe(client, userdata, mid, granted_qos):
 
 def on_message(client, userdata, msg):
     payload = msg.payload.decode('utf-8')
-    request_to_mission(payload)
+    request_to_mission(str(payload))
 
 
 def request_to_mission(con):
