@@ -164,6 +164,7 @@ def request_to_mission(con):
 
 def main():
     global lib
+    global lib_mqtt_client
     global missionPort
     global control_topic
     global data_topic
@@ -217,7 +218,7 @@ def main():
     req_topic = '/MUV/data/' + lib["name"] + '/' + lib["data"][0] + 'req'
 
     lib_mqtt_client = msw_mqtt_connect(broker_ip, port)
-    missionPort = missionPortOpening(lib['serialPortNum'], lib['serialBaudrate'])
+    missionPortOpening(lib['serialPortNum'], lib['serialBaudrate'])
 
 #     while True:
 #         if gun_event & CONTROL_E:
