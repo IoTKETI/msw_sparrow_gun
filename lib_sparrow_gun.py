@@ -56,8 +56,6 @@ def missionPortError(err):
     status = 'error'
     send_data_to_msw(status)
 
-    os.kill(i_pid, signal.SIGKILL)
-
 
 def send_data_to_msw (obj_data):
     global lib_mqtt_client
@@ -73,6 +71,7 @@ def missionPortData():
     if req == "1":
         status = 'alive'
         send_data_to_msw(status)
+
 
 def msw_mqtt_connect(broker_ip, port):
     global lib
@@ -108,9 +107,6 @@ def on_subscribe(client, userdata, mid, granted_qos):
 
 
 def on_message(client, userdata, msg):
-#     cmd = msg.payload.decode('utf-8')
-#     print('on_message: ', cmd)
-#     request_to_mission(cmd)
     global gun_event
     global data_topic
     global control_topic
@@ -118,15 +114,12 @@ def on_message(client, userdata, msg):
     global con
     global req
 
-#     print(msg.topic)
-
     if msg.topic == control_topic:
         con = msg.payload.decode('utf-8')
         gun_event |= CONTROL_E
     elif msg.topic == req_topic:
         req = msg.payload.decode('utf-8')
         gun_event |= DATA_E
-
 
 
 def request_to_mission():
@@ -178,7 +171,6 @@ def main():
     my_lib_name = 'lib_sparrow_gun'
     my_msw_name = 'msw'+ my_lib_name[3:] + '_' + 'msw'+ my_lib_name[3:]
 
-#     cmd = ['python3', './' + my_msw_name + '/' + my_lib_name + '.py', argv[1], argv[2]]
     cmd = ['./' + my_msw_name + '/' + my_lib_name, argv[1], argv[2]]
     pid_arr = []
     processWatch = [p.cmdline() for p in psutil.process_iter()].count(cmd)
