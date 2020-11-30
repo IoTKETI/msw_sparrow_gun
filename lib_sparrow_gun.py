@@ -64,6 +64,7 @@ def missionPortData():
     global status
     status = 'alive'
     send_data_to_msw(status)
+    sleep(1)
 
 def msw_mqtt_connect(broker_ip, port):
     global lib
