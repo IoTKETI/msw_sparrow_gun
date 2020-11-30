@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import serial, sys, json, os, signal
+import serial, sys, json, os, signal, psutil
 import paho.mqtt.client as mqtt
 from time import sleep
 
@@ -134,6 +134,12 @@ def main():
     global missionPort
 
     my_lib_name = 'lib_sparrow_gun'
+    my_msw_name = my_lib_name[3:] + '_' + my_lib_name[3:]
+    print(my_msw_name)
+    print ('./' + my_msw_name + '/' + my_lib_name, argv[1], argv[2])
+    processWatch = [p.cmdline() for p in psutil.process_iter()].count(['./' + my_msw_name + '/' + my_lib_name, argv[1], argv[2]])
+    if processWatch > 0:
+        os.kill(i_pid, signal.SIGKILL)
 
     try:
         lib = dict()
