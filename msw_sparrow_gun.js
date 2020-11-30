@@ -112,25 +112,25 @@ function runLib(obj_lib) {
         }
 
         // var run_lib = spawn(scripts_arr[0], scripts_arr.slice(1));
-        var run_lib = spawn('python3', ['./' + config.directory_name + '/lib_sparrow_gun.py', '/dev/ttyUSB3', '9600']);
-
-        run_lib.stdout.on('data', function(data) {
-            console.log('stdout: ' + data);
-        });
-
-        run_lib.stderr.on('data', function(data) {
-            console.log('stderr: ' + data);
-        });
-
-        run_lib.on('exit', function(code) {
-            console.log('exit: ' + code);
-
-            // setTimeout(runLib, 2000, obj_lib);
-        });
-
-        run_lib.on('error', function(code) {
-            console.log('error: ' + code);
-        });
+        // var run_lib = spawn('python3', ['./' + config.directory_name + '/lib_sparrow_gun.py', '/dev/ttyUSB3', '9600']);
+        //
+        // run_lib.stdout.on('data', function(data) {
+        //     console.log('stdout: ' + data);
+        // });
+        //
+        // run_lib.stderr.on('data', function(data) {
+        //     console.log('stderr: ' + data);
+        // });
+        //
+        // run_lib.on('exit', function(code) {
+        //     console.log('exit: ' + code);
+        //
+        //     // setTimeout(runLib, 2000, obj_lib);
+        // });
+        //
+        // run_lib.on('error', function(code) {
+        //     console.log('error: ' + code);
+        // });
     }
     catch (e) {
         console.log(e.message);
@@ -215,6 +215,7 @@ function msw_mqtt_connect(broker_ip, port) {
 }
 
 function req_status() {
+    console.log('send req');
     msw_mqtt_client.publish('/MUV/data/' + config.lib[0].name + '/' + config.lib[0].data + 'req', "1");
 }
 
