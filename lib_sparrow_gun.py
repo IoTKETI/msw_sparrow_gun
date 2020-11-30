@@ -92,8 +92,9 @@ def msw_mqtt_connect(broker_ip, port):
     lib_mqtt_client.connect(broker_ip, port)
     control_topic = '/MUV/control/' + lib["name"] + '/' + lib["control"][0]
     lib_mqtt_client.subscribe(control_topic, 0)
-
-    lib_mqtt_client.subscribe(data_topic+'req', 0)
+    req_topic = data_topic+'req'
+    print(req_topic)
+    lib_mqtt_client.subscribe(req_topic, 0)
 
     lib_mqtt_client.loop_start()
     return lib_mqtt_client
@@ -117,12 +118,15 @@ def on_message(client, userdata, msg):
     global control_topic
     global con
     global req
+
     print(msg.topic)
 
     if msg.topic == control_topic:
+        print('control')
         con = msg.payload.decode('utf-8')
         gun_event |= CONTROL_E
     elif msg.topic == data_topic + 'req':
+        print('data')
         req = msg.payload.decode('utf-8')
         gun_event |= DATA_E
 
