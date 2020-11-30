@@ -17,16 +17,15 @@ DATA_E = 0x02
 
 def missionPortOpening(missionPortNum, missionBaudrate):
     global missionPort
+    global status
 
     print('Connect to serial...')
     try:
         missionPort = serial.Serial(missionPortNum, missionBaudrate, timeout=2)
         if missionPort.isOpen():
             print('missionPort Open. ', missionPortNum, 'Data rate: ', missionBaudrate)
-#             mission_thread = threading.Thread(
-#                 target=missionPortData
-#             )
-#             mission_thread.start()
+            status = 'open'
+            send_data_to_msw(status)
 
     except serial.SerialException as e:
         missionPortError(e)
@@ -36,9 +35,6 @@ def missionPortOpening(missionPortNum, missionBaudrate):
 
 def missionPortOpen():
     global missionPort
-    global status
-    status = 'open'
-    send_data_to_msw(status)
 
     print('missionPort open!')
     missionPort.open()
@@ -75,10 +71,8 @@ def missionPortData():
     global req
 
     if req == "1":
-#     while True:
         status = 'alive'
         send_data_to_msw(status)
-    #     sleep(1)
 
 def msw_mqtt_connect(broker_ip, port):
     global lib
@@ -143,12 +137,12 @@ def request_to_mission():
         if missionPort != None:
             if missionPort.isOpen():
                 con_arr = con.split(',')
-                print(con_arr)
+#                 print(con_arr)
                 if (int(con_arr[0]) < 8) and (int(con_arr[1]) < 8):
                     stx = 'A2'
                     command = '030' + con_arr[0] + '0' + con_arr[1] + '000000000000'
                     crc = 0
-                    print(command)
+#                     print(command)
                     for i in range(0,len(command),2):
                         print('crc: ', crc)
                         crc ^= int(command[i+1],16)
@@ -159,10 +153,10 @@ def request_to_mission():
 
                     etx = 'A3'
                     command = stx + command + etx
-                    print('command: ', command)
+#                     print('command: ', command)
 
                     msdata = bytes.fromhex(command)
-                    print('msdata: ', msdata)
+#                     print('msdata: ', msdata)
                     missionPort.write(msdata)
 
     except (ValueError, IndexError, TypeError):
@@ -233,7 +227,6 @@ def main():
             request_to_mission()
         elif gun_event & DATA_E:
             gun_event &= (~DATA_E)
-            print('req status 2')
             missionPortData()
 
 
