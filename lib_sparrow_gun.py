@@ -19,7 +19,7 @@ def missionPortOpening(missionPortNum, missionBaudrate):
         if missionPort.isOpen():
             print('missionPort Open. ', missionPortNum, 'Data rate: ', missionBaudrate)
             mission_thread = threading.Thread(
-                target=missionPortData, args=(missionPort,)
+                target=missionPortData
             )
             mission_thread.start()
 
@@ -67,6 +67,7 @@ def send_data_to_msw (obj_data):
 
 def missionPortData():
     global status
+
 
     while True:
         status = 'alive'
