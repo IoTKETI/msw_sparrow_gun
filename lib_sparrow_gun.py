@@ -102,6 +102,7 @@ def on_message(client, userdata, msg):
 
 def request_to_mission(con):
     try:
+        print(con)
         if missionPort != None:
             if missionPort.isOpen():
                 con_arr = con.split(',')
@@ -127,6 +128,7 @@ def request_to_mission(con):
                     missionPort.write(msdata)
 
     except (ValueError, IndexError, TypeError):
+        print ('except Error')
         pass
 
 def main():
