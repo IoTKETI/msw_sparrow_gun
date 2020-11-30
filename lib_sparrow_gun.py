@@ -1,64 +1,62 @@
 #!/usr/bin/python3
-import serial
+import serial, sys, json, os, signal
 import paho.mqtt.client as mqtt
-import sys
-import threading
-from time import sleep
-import json
 
 ################################
+i_pid = os.getpid()
 argv = sys.argv
 
-global lib
-global lib_topic
 broker_ip = 'localhost'
 port = 1883
 
-
-global lib_mqtt_client
-lib={}
-sleep_sec = 1
-
-def missionPortOpen(missionPortNum, missionBaudrate):
-    # Connect serial
+def missionPortOpening(missionPortNum, missionBaudrate):
     global missionPort
+    global status
+
     print('Connect to serial...')
     try:
         missionPort = serial.Serial(missionPortNum, missionBaudrate, timeout=2)
         if missionPort.isOpen():
             print('missionPort Open. ', missionPortNum, 'Data rate: ', missionBaudrate)
-            mission_thread = threading.Thread(
-                target=missionPortData, args=(missionPort,)
-            )
-            mission_thread.start()
 
-            return missionPort
     except serial.SerialException as e:
         missionPortError(e)
     except TypeError as e:
         missionPortClose()
-        missionPort.close()
+
+
+def missionPortOpen():
+    global missionPort
+    print('missionPort open!')
+    missionPort.open()
 
 
 def missionPortClose():
+    global missionPort
     print('missionPort closed!')
+    missionPort.close()
 
 
 def missionPortError(err):
     print('[missionPort error]: ', err)
+    os.kill(i_pid, signal.SIGKILL)
 
 
 def send_data_to_msw (data_topic, obj_data):
+    global lib_mqtt_client
     lib_mqtt_client.publish(data_topic, obj_data)
 
 
-def missionPortData(missionPort):
-    while True:
-        arrRssi = missionPort.read()
-
+def missionPortData():
+    global missionPort
+    arrRssi = missionPort.read()
+    print("arrRssi: ", arrRssi)
+    print("arrRssi Type: ", type(arrRssi))
+#     send_data_to_msw(arrRssi)
 
 def msw_mqtt_connect(broker_ip, port):
     global lib
+    global lib_mqtt_client
 
     lib_mqtt_client = mqtt.Client()
     lib_mqtt_client.on_connect = on_connect
@@ -68,7 +66,7 @@ def msw_mqtt_connect(broker_ip, port):
     lib_mqtt_client.connect(broker_ip, port)
     control_topic = '/MUV/control/' + lib["name"] + '/' + lib["control"][0]
     lib_mqtt_client.subscribe(control_topic, 0)
-#     print(control_topic)
+
     lib_mqtt_client.loop_start()
     return lib_mqtt_client
 
@@ -87,12 +85,7 @@ def on_subscribe(client, userdata, mid, granted_qos):
 
 def on_message(client, userdata, msg):
     payload = msg.payload.decode('utf-8')
-    on_receive_from_msw(msg.topic, str(payload))
-
-
-def on_receive_from_msw(topic, str_message):
-    print('[' + topic + '] ' + str_message)
-    request_to_mission(str_message)
+    request_to_mission(payload)
 
 
 def request_to_mission(con):
@@ -126,6 +119,7 @@ def request_to_mission(con):
 
 def main():
     global lib
+    global missionPort
 
     my_lib_name = 'lib_sparrow_gun'
 
@@ -156,6 +150,10 @@ def main():
     
     lib_mqtt_client = msw_mqtt_connect(broker_ip, port)
     missionPort = missionPortOpen(lib['serialPortNum'], lib['serialBaudrate'])
- 
+
+    while True:
+        missionPortData()
+
+
 if __name__ == "__main__":
     main()
