@@ -163,6 +163,9 @@ def request_to_mission(con):
 def main():
     global lib
     global missionPort
+    global control_topic
+    global data_topic
+    global req_topic
 
     global gun_event
     global con
