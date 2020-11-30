@@ -139,7 +139,6 @@ def main():
 #     cmd = ['python3', './' + my_msw_name + '/' + my_lib_name + '.py', argv[1], argv[2]]
     cmd = ['./' + my_msw_name + '/' + my_lib_name, argv[1], argv[2]]
     pid_arr = []
-
     processWatch = [p.cmdline() for p in psutil.process_iter()].count(cmd)
     if processWatch > 2:
         for p in psutil.process_iter():
