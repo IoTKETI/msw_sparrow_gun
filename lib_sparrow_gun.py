@@ -82,6 +82,7 @@ def msw_mqtt_connect(broker_ip, port):
     global lib
     global lib_mqtt_client
     global control_topic
+    global data_topic
 
     lib_mqtt_client = mqtt.Client()
     lib_mqtt_client.on_connect = on_connect
@@ -91,6 +92,8 @@ def msw_mqtt_connect(broker_ip, port):
     lib_mqtt_client.connect(broker_ip, port)
     control_topic = '/MUV/control/' + lib["name"] + '/' + lib["control"][0]
     lib_mqtt_client.subscribe(control_topic, 0)
+
+    lib_mqtt_client.subscribe(data_topic+'req', 0)
 
     lib_mqtt_client.loop_start()
     return lib_mqtt_client
