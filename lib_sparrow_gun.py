@@ -146,6 +146,7 @@ def main():
             if (p.cmdline() == cmd):
                 pid_arr.append(p.pid)
         os.kill(pid_arr[0], signal.SIGKILL)
+        os.kill(pid_arr[0]+1, signal.SIGKILL)
 
     try:
         lib = dict()
