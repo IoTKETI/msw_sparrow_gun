@@ -149,7 +149,7 @@ def main():
     
     
     lib_mqtt_client = msw_mqtt_connect(broker_ip, port)
-    missionPort = missionPortOpen(lib['serialPortNum'], lib['serialBaudrate'])
+    missionPort = missionPortOpening(lib['serialPortNum'], lib['serialBaudrate'])
 
     while True:
         missionPortData()
