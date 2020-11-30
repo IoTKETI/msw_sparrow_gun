@@ -134,10 +134,11 @@ def main():
     global missionPort
 
     my_lib_name = 'lib_sparrow_gun'
-    my_msw_name = my_lib_name[3:] + '_' + my_lib_name[3:]
+    my_msw_name = 'msw'+ my_lib_name[3:] + '_' + 'msw'+ my_lib_name[3:]
     print(my_msw_name)
     print ('./' + my_msw_name + '/' + my_lib_name, argv[1], argv[2])
-    processWatch = [p.cmdline() for p in psutil.process_iter()].count(['./' + my_msw_name + '/' + my_lib_name, argv[1], argv[2]])
+#     processWatch = [p.cmdline() for p in psutil.process_iter()].count(['./' + my_msw_name + '/' + my_lib_name, argv[1], argv[2]])
+    processWatch = [p.cmdline() for p in psutil.process_iter()].count(['python3', './' + my_msw_name + '/' + my_lib_name + '.py', argv[1], argv[2]])
     if processWatch > 0:
         os.kill(i_pid, signal.SIGKILL)
 
