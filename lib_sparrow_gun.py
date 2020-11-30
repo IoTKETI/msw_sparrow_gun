@@ -88,7 +88,6 @@ def msw_mqtt_connect(broker_ip, port):
     lib_mqtt_client.connect(broker_ip, port)
     control_topic = '/MUV/control/' + lib["name"] + '/' + lib["control"][0]
     lib_mqtt_client.subscribe(control_topic, 0)
-    lib_mqtt_client.subscribe(req_topic, 0)
 
     lib_mqtt_client.loop_start()
     return lib_mqtt_client
@@ -108,6 +107,7 @@ def on_subscribe(client, userdata, mid, granted_qos):
 
 def on_message(client, userdata, msg):
     cmd = msg.payload.decode('utf-8')
+    print('on_message: ', cmd)
     request_to_mission(cmd)
 #     global gun_event
 #     global data_topic
@@ -129,6 +129,8 @@ def on_message(client, userdata, msg):
 
 
 def request_to_mission(con):
+    print('request_to_mission: ', con)
+
     try:
         if missionPort != None:
             if missionPort.isOpen():
