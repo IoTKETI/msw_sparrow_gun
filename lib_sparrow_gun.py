@@ -130,10 +130,10 @@ def on_message(client, userdata, msg):
 
 def request_to_mission(con):
     global missionPort
-    print('request_to_mission: ', con)
 
     try:
         if missionPort != None:
+            print('request_to_mission: ', con)
             if missionPort.isOpen():
                 con_arr = con.split(',')
                 print(con_arr)
