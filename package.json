@@ -1,0 +1,23 @@
+{
+  "name": "msw_sparrow_gun",
+  "version": "1.0.0",
+  "description": "MSW for control device",
+  "main": "msw_sparrow_gun.js",
+  "dependencies": {
+    "mqtt": "^4.2.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IoTKETI/msw_sparrow_gun.git"
+  },
+  "author": "Wonseok Jung",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/IoTKETI/msw_sparrow_gun/issues"
+  },
+  "homepage": "https://github.com/IoTKETI/msw_sparrow_gun#readme"
+}
