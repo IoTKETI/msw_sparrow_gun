@@ -23,14 +23,31 @@ var my_msw_name = 'msw_sparrow_gun';
 var fc = {};
 var config = {};
 
+
+try {                                   // for nCube-MUV (NodeJs)
+    sortie_name = my_sortie_name
+}
+catch (e) {                             // for nCube-MUV-Python
+    var sortie_name = process.argv[2]
+}
+
 config.name = my_msw_name;
 
 try {
-    config.directory_name = msw_directory[my_msw_name];
-    config.sortie_name = '/' + my_sortie_name;
-    config.gcs = drone_info.gcs;
-    config.drone = drone_info.drone;
-    config.lib = [];
+    try {           // for nCube-MUV (NodeJs)
+        config.directory_name = msw_directory[my_msw_name];
+        config.sortie_name = '/' + sortie_name;
+        config.gcs = drone_info.gcs;
+        config.drone = drone_info.drone;
+        config.lib = [];
+    }
+    catch (e) {     // for nCube-MUV-Python
+        config.directory_name = process.argv[3];
+        config.sortie_name = '/' + sortie_name;
+        config.gcs = process.argv[4];
+        config.drone = process.argv[5];
+        config.lib = [];
+    }
 }
 catch (e) {
     config.sortie_name = '';
@@ -182,7 +199,7 @@ function msw_mqtt_connect(broker_ip, port) {
         for(var idx in noti_topic) {
             if (noti_topic.hasOwnProperty(idx)) {
                 if(topic == noti_topic[idx]) {
-	            
+
                     setTimeout(on_receive_from_muv, parseInt(Math.random() * 5), topic, message.toString());
                     break;
                 }
@@ -254,7 +271,7 @@ function parseDataMission(topic, str_message) {
 
         var topic_arr = topic.split('/');
         var data_topic = '/Mobius/' + config.gcs + '/Mission_Data/' + config.drone + '/' + config.name + '/' + topic_arr[topic_arr.length-1];
-        msw_mqtt_client.publish(data_topic + '/' + my_sortie_name, str_message);
+        msw_mqtt_client.publish(data_topic + '/' + sortie_name, str_message);
         // msw_mqtt_client.publish(data_topic, str_message);
     }
     catch (e) {
@@ -273,10 +290,10 @@ function parseControlMission(topic, str_message) {
         msw_mqtt_client.publish(_topic, str_message);
     }
     catch (e) {
-        console.log('[parseDataMission] data format of lib is not json');
+        console.log('[parseControlMission] data format of MUV is not json');
     }
     // var indata = JSON.parse(str_message);
-    
+
     // console.log('[' + topic + '] ' + indata.con);
     // console.log('msw message received from nCube');
     // var container_name = config.lib[0].control[0];
