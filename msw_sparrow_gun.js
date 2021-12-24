@@ -231,7 +231,7 @@ function msw_mqtt_connect(broker_ip, port) {
 }
 
 function req_status() {
-    console.log('send req');
+    // console.log('send req');
     msw_mqtt_client.publish('/MUV/data/' + config.lib[0].name + '/' + config.lib[0].data + 'req', "1");
     setTimeout(req_status, 1000);
 }
@@ -243,7 +243,7 @@ function on_receive_from_muv(topic, str_message) {
 }
 
 function on_receive_from_lib(topic, str_message) {
-    console.log('[' + topic + '] ' + str_message);
+    // console.log('[' + topic + '] ' + str_message);
 
     parseDataMission(topic, str_message);
 }
