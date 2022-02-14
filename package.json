@@ -4,7 +4,10 @@
   "description": "MSW for control device",
   "main": "msw_sparrow_gun.js",
   "dependencies": {
-    "mqtt": "^4.2.6"
+    "@cicciosgamino/openweather-apis": "^5.2.0",
+    "mqtt": "^4.2.6",
+    "nanoid": "^3.2.0",
+    "request": "^2.88.2"
   },
   "devDependencies": {},
   "scripts": {
