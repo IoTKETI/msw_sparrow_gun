@@ -31,7 +31,7 @@ var fc = {};
 var config = {};
 
 try {
-    drone_info = JSON.parse(fs.readFileSync('./drone_info.json', 'utf8'));
+    drone_info = JSON.parse(fs.readFileSync('../drone_info.json', 'utf8'));
 
     config.directory_name = my_msw_name + '_' + my_msw_name;
     // config.sortie_name = '/' + sortie_name;
@@ -341,22 +341,6 @@ const forecast = function (latitude, longitude, altitude) {
         if (error) {
             console.log('Unable to connect to Forecast API');
         } else {
-            // console.log('Temp is currently '
-            //     + response.body.main.temp
-            //     + ' degrees out.'
-            // );
-            //
-            // console.log('The high today is '
-            //     + response.body.main.temp_max
-            //     + ' with a low of '
-            //     + response.body.main.temp_min
-            // );
-            //
-            // console.log('Wind speed today is '
-            //     + response.body.wind.speed // check unit
-            //     + ' with a deg of '
-            //     + response.body.wind.deg
-            // );
             var wind_speed = response.body.wind.speed;
             var wind_deg = response.body.wind.deg
 
