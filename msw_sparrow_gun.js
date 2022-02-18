@@ -187,7 +187,7 @@ function msw_mqtt_connect(broker_ip, port) {
                                 } else {
                                     local_msw_mqtt_client.publish(lib_ctl_topic, JSON.stringify(cinObj.con));
                                 }
-                                // forecast(fc['global_position_int'].lat, fc['global_position_int'].lon, fc['global_position_int'].alt);
+                                forecast(fc['global_position_int'].lat, fc['global_position_int'].lon, fc['global_position_int'].alt);
                             }
                         }
                     }
