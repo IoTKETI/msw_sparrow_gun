@@ -48,7 +48,7 @@ try {
 
 var add_lib = {};
 try {
-    add_lib = JSON.parse(fs.readFileSync('./' + config.directory_name + '/lib_sparrow_gun.json', 'utf8'));
+    add_lib = JSON.parse(fs.readFileSync('./lib_sparrow_gun.json', 'utf8'));
     config.lib.push(add_lib);
 } catch (e) {
     add_lib = {
