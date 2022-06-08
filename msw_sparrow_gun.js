@@ -17,7 +17,6 @@
 var mqtt = require('mqtt');
 var fs = require('fs');
 var spawn = require('child_process').spawn;
-const request = require('request');
 const {nanoid} = require('nanoid');
 const util = require("util");
 
@@ -26,6 +25,7 @@ global.sh_man = require('./http_man');
 var fc = {};
 var config = {};
 
+global.drone_info = '';
 config.name = 'msw_sparrow_gun';
 
 try {
@@ -94,7 +94,7 @@ function init() {
                 }
 
                 var obj_lib = config.lib[idx];
-                setTimeout(runLib, 1000 + parseInt(Math.random() * 10), JSON.parse(JSON.stringify(obj_lib)));
+                //setTimeout(runLib, 1000 + parseInt(Math.random() * 10), JSON.parse(JSON.stringify(obj_lib)));
             }
         }
     }
