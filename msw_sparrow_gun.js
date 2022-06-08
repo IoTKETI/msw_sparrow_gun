@@ -23,17 +23,15 @@ const util = require("util");
 
 global.sh_man = require('./http_man');
 
-var API_KEY = '472546e1d0a9a53064c2ae59d4610f13';
-
-var my_msw_name = 'msw_sparrow_gun';
-
 var fc = {};
 var config = {};
+
+config.name = 'msw_sparrow_gun';
 
 try {
     drone_info = JSON.parse(fs.readFileSync('../drone_info.json', 'utf8'));
 
-    config.directory_name = my_msw_name + '_' + my_msw_name;
+    config.directory_name = config.name + '_' + config.name;
     // config.sortie_name = '/' + sortie_name;
     config.gcs = drone_info.gcs;
     config.drone = drone_info.drone;
@@ -147,7 +145,7 @@ function msw_mqtt_connect(broker_ip, port) {
             port: port,
             protocol: "mqtt",
             keepalive: 10,
-            clientId: 'mqttjs_' + config.drone + '_' + my_msw_name + '_' + nanoid(15),
+            clientId: 'mqttjs_' + config.drone + '_' + config.name + '_' + nanoid(15),
             protocolId: "MQTT",
             protocolVersion: 4,
             clean: true,
@@ -177,7 +175,7 @@ function msw_mqtt_connect(broker_ip, port) {
                 let patharr = jsonObj.pc['m2m:sgn'].sur.split('/');
                 let lib_ctl_topic = '/MUV/control/' + patharr[patharr.length - 3].replace('msw_', 'lib_') + '/' + patharr[patharr.length - 2];
 
-                if (patharr[patharr.length - 3] === my_msw_name) {
+                if (patharr[patharr.length - 3] === config.name) {
                     if (jsonObj.pc['m2m:sgn'].nev) {
                         if (jsonObj.pc['m2m:sgn'].nev.rep) {
                             if (jsonObj.pc['m2m:sgn'].nev.rep['m2m:cin']) {
@@ -187,7 +185,7 @@ function msw_mqtt_connect(broker_ip, port) {
                                 } else {
                                     local_msw_mqtt_client.publish(lib_ctl_topic, JSON.stringify(cinObj.con));
                                 }
-                                forecast(fc['global_position_int'].lat, fc['global_position_int'].lon, fc['global_position_int'].alt);
+                                // forecast(fc['global_position_int'].lat, fc['global_position_int'].lon, fc['global_position_int'].alt);
                             }
                         }
                     }
@@ -215,7 +213,7 @@ function local_msw_mqtt_connect(broker_ip, port) {
             keepalive: 10,
             protocolId: "MQTT",
             protocolVersion: 4,
-            clientId: 'local_msw_mqtt_client_mqttjs_' + config.drone + '_' + my_msw_name + '_' + nanoid(15),
+            clientId: 'local_msw_mqtt_client_mqttjs_' + config.drone + '_' + config.name + '_' + nanoid(15),
             clean: true,
             reconnectPeriod: 2000,
             connectTimeout: 2000,
@@ -331,26 +329,4 @@ function parseFcData(topic, str_message) {
     //     msw_mqtt_client.publish(_topic, str_message);
     // }
     ///////////////////////////////////////////////////////////////////////
-}
-
-const forecast = function (latitude, longitude, altitude) {
-    var url = `http://api.openweathermap.org/data/2.5/weather?`
-        + `lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric`
-
-    request({url: url, json: true}, function (error, response) {
-        if (error) {
-            console.log('Unable to connect to Forecast API');
-        } else {
-            var wind_speed = response.body.wind.speed;
-            var wind_deg = response.body.wind.deg
-
-            fs.appendFile('./wind_info.txt', [latitude, longitude, altitude, wind_speed, wind_deg] + "\n", 'utf8', function (error) {
-                if (error) {
-                    console.log(error)
-                }
-            });
-
-
-        }
-    })
 }
