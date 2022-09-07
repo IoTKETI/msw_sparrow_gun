@@ -64,10 +64,7 @@ try {
 var msw_sub_mobius_topic = [];
 
 var msw_sub_fc_topic = [];
-// msw_sub_fc_topic.push('/Mobius/' + config.gcs + '/Drone_Data/' + config.drone + '/heartbeat');
-msw_sub_fc_topic.push('/Mobius/' + config.gcs + '/Drone_Data/' + config.drone + '/global_position_int');
-// msw_sub_fc_topic.push('/Mobius/' + config.gcs + '/Drone_Data/' + config.drone + '/attitude');
-// msw_sub_fc_topic.push('/Mobius/' + config.gcs + '/Drone_Data/' + config.drone + '/battery_status');
+msw_sub_fc_topic.push('/TELE/drone/gpi');
 
 var msw_sub_lib_topic = [];
 
