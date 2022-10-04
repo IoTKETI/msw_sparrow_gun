@@ -10,7 +10,3 @@ $ sudo wget http://repo.mosquitto.org/debian/mosquitto-buster.list
 $ sudo apt-get update
 $ sudo apt-get install -y mosquitto
 ```
-### Python Library
-#### mqtt
-```
-$ pip3 install paho-mqtt
