@@ -29,7 +29,7 @@ global.drone_info = '';
 config.name = 'msw_sparrow_gun';
 
 try {
-    drone_info = JSON.parse(fs.readFileSync('../drone_info.json', 'utf8'));
+    drone_info = JSON.parse(fs.readFileSync('./drone_info.json', 'utf8'));
 
     config.directory_name = config.name + '_' + config.name;
     // config.sortie_name = '/' + sortie_name;
@@ -53,7 +53,7 @@ try {
         name: 'lib_sparrow_gun',
         target: 'armv6',
         description: "[name] [portnum] [baudrate]",
-        scripts: './lib_sparrow_gun /dev/ttyUSB3 9600',
+        scripts: './lib_sparrow_gun /dev/ttyAMA1 9600',
         data: ['GUN'],
         control: ['MICRO']
     };
@@ -255,7 +255,7 @@ function local_msw_mqtt_connect(broker_ip, port) {
 }
 
 function on_receive_from_muv(topic, str_message) {
-    // console.log('[' + topic + '] ' + str_message);
+    console.log('[' + topic + '] ' + str_message);
 
     parseControlMission(topic, str_message);
 }
