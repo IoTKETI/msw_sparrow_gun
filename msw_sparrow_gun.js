@@ -178,9 +178,9 @@ function msw_mqtt_connect(broker_ip, port) {
                             if (jsonObj.pc['m2m:sgn'].nev.rep['m2m:cin']) {
                                 let cinObj = jsonObj.pc['m2m:sgn'].nev.rep['m2m:cin']
                                 if (getType(cinObj.con) == 'string') {
-                                    local_msw_mqtt_client.publish(lib_ctl_topic, cinObj.con);
+                                    on_receive_from_muv(lib_ctl_topic, cinObj.con);
                                 } else {
-                                    local_msw_mqtt_client.publish(lib_ctl_topic, JSON.stringify(cinObj.con));
+                                    on_receive_from_muv(lib_ctl_topic, JSON.stringify(cinObj.con));
                                 }
                                 // forecast(fc['global_position_int'].lat, fc['global_position_int'].lon, fc['global_position_int'].alt);
                             }
