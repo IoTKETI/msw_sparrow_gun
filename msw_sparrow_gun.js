@@ -29,7 +29,7 @@ global.drone_info = '';
 config.name = 'msw_sparrow_gun';
 
 try {
-    drone_info = JSON.parse(fs.readFileSync('./drone_info.json', 'utf8'));
+    drone_info = JSON.parse(fs.readFileSync('../drone_info.json', 'utf8'));
 
     config.directory_name = config.name + '_' + config.name;
     // config.sortie_name = '/' + sortie_name;
